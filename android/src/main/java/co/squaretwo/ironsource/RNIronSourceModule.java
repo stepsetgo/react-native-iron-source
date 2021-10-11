@@ -3,17 +3,20 @@ package co.squaretwo.ironsource;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.ironsource.mediationsdk.IronSource;
 import com.ironsource.mediationsdk.integration.IntegrationHelper;
 
-public class RNIronSourceModule extends ReactContextBaseJavaModule {
+
+public class RNIronSourceModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
     private static final String TAG = "RNIronSource";
 
     private ReactApplicationContext reactContext;
@@ -21,6 +24,8 @@ public class RNIronSourceModule extends ReactContextBaseJavaModule {
     public RNIronSourceModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
+
+        reactContext.addLifecycleEventListener(this);
     }
 
     @Override
@@ -60,5 +65,21 @@ public class RNIronSourceModule extends ReactContextBaseJavaModule {
       catch (Exception e) {
         promise.resolve(null);
       }
+    }
+
+    @Override
+    public void onHostResume() {
+      final Activity activity = reactContext.getCurrentActivity();
+      IronSource.onResume(activity);
+    }
+
+    @Override
+    public void onHostPause() {
+      final Activity activity = reactContext.getCurrentActivity();
+      IronSource.onPause(activity);
+    }
+
+    @Override
+    public void onHostDestroy() {
     }
 }
