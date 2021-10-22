@@ -63,12 +63,16 @@ public class RNIronSourceRewardedVideoModule extends ReactContextBaseJavaModule 
                 }
                 @Override
                 public void onRewardedVideoAdRewarded(Placement placement) {
-                    String rewardName = placement.getRewardName();
-                    int rewardAmount = placement.getRewardAmount();
-                    Log.d(TAG, "onRewardedVideoAdRewarded() called! " + rewardName + " " + rewardAmount);
                     WritableMap map = Arguments.createMap();
-                    map.putString("rewardName", rewardName);
-                    map.putString("rewardAmount", String.valueOf(rewardAmount));
+
+                    if (placement != null) {
+                        String rewardName = placement.getRewardName();
+                        int rewardAmount = placement.getRewardAmount();
+                        Log.d(TAG, "onRewardedVideoAdRewarded() called! " + rewardName + " " + rewardAmount);
+                        map.putString("rewardName", rewardName);
+                        map.putString("rewardAmount", String.valueOf(rewardAmount));
+                    }
+                    
                     sendEvent("ironSourceRewardedVideoAdRewarded", map);
                 }
                 @Override
