@@ -40,11 +40,12 @@ public class RNIronSourceModule extends ReactContextBaseJavaModule implements Li
             public void run() {
                 final Activity activity = reactContext.getCurrentActivity();
                 final boolean validateIntegration = options.getBoolean("validateIntegration");
-
-                IronSource.setUserId(userId);
-                IronSource.init(activity, appId);
-                if (activity != null && validateIntegration) {
-                    IntegrationHelper.validateIntegration(activity);
+                if(activity != null) {
+                    IronSource.setUserId(userId);
+                    IronSource.init(activity, appId);
+                    if (validateIntegration) {
+                        IntegrationHelper.validateIntegration(activity);
+                    }
                 }
 
                 promise.resolve(null);
